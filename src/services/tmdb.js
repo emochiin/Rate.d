@@ -9,7 +9,7 @@ export async function searchMovie(query) {
       },
     },
   );
-  const data = response.results;
+  const data = response.results.slice(0, 10);
   const results = data.map((movie) => ({
     title: movie.title,
     image: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
@@ -27,7 +27,7 @@ export async function searchSeries(query) {
       },
     },
   );
-  const data = response.results;
+  const data = response.results.slice(0, 10);
   const results = data.map((series) => ({
     title: series.name,
     image: `https://image.tmdb.org/t/p/w500${series.poster_path}`,
