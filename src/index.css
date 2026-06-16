@@ -1,0 +1,50 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+:root {
+  --font-main: 'Inter';
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-regular: 400;
+
+  --font-size-h1: 40px;
+  --font-size-h2: 28px;
+  --font-size-h3: 20px;
+  --font-size-body: 16px;
+  --font-size-small: 13px;
+  --line-height-base: 1.6;
+
+  --color-bg: #1a1a1a;
+  --color-card: #242424;
+  --color-active: #2e2e2e;
+  --color-accent: #c9a96e;
+  --color-text: #f0f0f0;
+  --color-muted: #6b6b6b;
+
+  --color-status-completed: #4e9e6b;
+  --color-status-in-progress: #c9a96e;
+  --color-status-dropped: #a05252;
+  --color-status-watchlist: #5a7fa8;
+
+  --color-mediatype-movie: #7a9ab5;
+  --color-mediatype-anime: #b57ab5;
+  --color-mediatype-manga: #e07b9a;
+  --color-mediatype-game: #7ab57a;
+  --color-mediatype-series: #b58a7a;
+  --color-mediatype-book: #c9a96e;
+  --color-mediatype-music: #b57a8a;
+
+  --color-mood-awe: #6d98c9;
+  --color-mood-tension: #b85b3f;
+  --color-mood-rage: #a02828;
+  --color-mood-longing: #9a6ba8;
+  --color-mood-melancholy: #545468;
+  --color-mood-curiosity: #7ab590;
+  --color-mood-comfort: #c9a96e;
+  --color-mood-joy: #e3cb64;
+
+  --radius: 6px;
+  --grid-base: 8px;
+  --max-content-width: 1280px;
+}
