@@ -1,8 +1,6 @@
 import { Pool } from 'pg';
 import 'dotenv/config';
 
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
