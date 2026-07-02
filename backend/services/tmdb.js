@@ -5,7 +5,7 @@ export async function searchMovie(query) {
     `https://api.themoviedb.org/3/search/movie?query=${query}`,
     {
       headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
       },
     },
   );
@@ -23,7 +23,7 @@ export async function searchSeries(query) {
     `https://api.themoviedb.org/3/search/tv?query=${query}`,
     {
       headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
       },
     },
   );
@@ -39,10 +39,10 @@ export async function searchSeries(query) {
 export async function getMovieDetails(id) {
   const [details, credits] = await Promise.all([
     apiFetch(`https://api.themoviedb.org/3/movie/${id}`, {
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
     }),
     apiFetch(`https://api.themoviedb.org/3/movie/${id}/credits`, {
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
     }),
   ]);
   return {
@@ -64,10 +64,10 @@ export async function getMovieDetails(id) {
 export async function getSeriesDetails(id) {
   const [details, credits] = await Promise.all([
     apiFetch(`https://api.themoviedb.org/3/tv/${id}`, {
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
     }),
     apiFetch(`https://api.themoviedb.org/3/tv/${id}/credits`, {
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
     }),
   ]);
   return {

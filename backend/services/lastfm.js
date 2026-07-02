@@ -2,7 +2,7 @@ import apiFetch from './api.js';
 
 export async function searchAlbum(query) {
   const response = await apiFetch(
-    `https://ws.audioscrobbler.com/2.0/?method=album.search&album=${query}&api_key=${import.meta.env.VITE_LASTFM_API_KEY}&limit=10&format=json`,
+    `https://ws.audioscrobbler.com/2.0/?method=album.search&album=${query}&api_key=${process.env.LASTFM_API_KEY}&limit=10&format=json`,
   );
   const data = response.results.albummatches.album;
   const result = data.map((album) => ({
@@ -15,7 +15,7 @@ export async function searchAlbum(query) {
 
 export async function searchTrack(query) {
   const response = await apiFetch(
-    `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${query}&api_key=${import.meta.env.VITE_LASTFM_API_KEY}&limit=10&format=json`,
+    `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${query}&api_key=${process.env.LASTFM_API_KEY}&limit=10&format=json`,
   );
   const data = response.results.trackmatches.track;
   const result = data.map((track) => ({
@@ -28,7 +28,7 @@ export async function searchTrack(query) {
 
 export async function getAlbumDetails(artist, album) {
   const response = await apiFetch(
-    `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=${artist}&album=${album}&api_key=${import.meta.env.VITE_LASTFM_API_KEY}&format=json`,
+    `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=${artist}&album=${album}&api_key=${process.env.LASTFM_API_KEY}&format=json`,
   );
   const data = response.album;
   return {
@@ -48,7 +48,7 @@ export async function getAlbumDetails(artist, album) {
 
 export async function getTrackDetails(artist, track) {
   const response = await apiFetch(
-    `https://ws.audioscrobbler.com/2.0/?method=track.getinfo&artist=${artist}&track=${track}&api_key=${import.meta.env.VITE_LASTFM_API_KEY}&format=json`,
+    `https://ws.audioscrobbler.com/2.0/?method=track.getinfo&artist=${artist}&track=${track}&api_key=${process.env.LASTFM_API_KEY}&format=json`,
   );
   const data = response.track;
   return {

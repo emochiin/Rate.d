@@ -2,7 +2,7 @@ import apiFetch from './api.js';
 
 export async function searchGame(query) {
   const response = await apiFetch(
-    `https://api.rawg.io/api/games?search=${query}&key=${import.meta.env.VITE_RAWG_API_KEY}&page_size=10`,
+    `https://api.rawg.io/api/games?search=${query}&key=${process.env.RAWG_API_KEY}&page_size=10`,
   );
   const data = response.results;
   const results = data.map((game) => ({
@@ -16,10 +16,10 @@ export async function searchGame(query) {
 export async function getGameDetails(id) {
   const [details, series] = await Promise.all([
     apiFetch(
-      `https://api.rawg.io/api/games/${id}?key=${import.meta.env.VITE_RAWG_API_KEY}`,
+      `https://api.rawg.io/api/games/${id}?key=${process.env.RAWG_API_KEY}`,
     ),
     apiFetch(
-      `https://api.rawg.io/api/games/${id}/game-series?key=${import.meta.env.VITE_RAWG_API_KEY}`,
+      `https://api.rawg.io/api/games/${id}/game-series?key=${process.env.RAWG_API_KEY}`,
     ),
   ]);
   return {
