@@ -2,7 +2,7 @@ import apiFetch from './api.js';
 
 export async function searchGame(query) {
   const response = await apiFetch(
-    `https://api.rawg.io/api/games?search=${query}&key=${process.env.RAWG_API_KEY}&page_size=10`,
+    `https://api.rawg.io/api/games?search=${encodeURIComponent(query)}&key=${process.env.RAWG_API_KEY}&page_size=10`,
   );
   const data = response.results;
   const results = data.map((game) => ({
@@ -26,13 +26,13 @@ export async function getGameDetails(id) {
     name: details.name,
     background_image: details.background_image,
     description: details.description_raw,
-    rating: details.metacritic_platforms[0]?.metascore,
-    genres: details.genres.map((g) => g.name),
-    platforms: details.parent_platforms.map((p) => p.platform.name),
-    developers: details.developers.map((d) => d.name),
+    rating: details.metacritic_platforms?.[0]?.metascore,
+    genres: (details.genres ?? []).map((g) => g.name),
+    platforms: (details.parent_platforms ?? []).map((p) => p.platform.name),
+    developers: (details.developers ?? []).map((d) => d.name),
     age_restriction: details.esrb_rating?.name,
     release_date: details.released,
-    tags: details.tags.map((t) => t.name),
+    tags: (details.tags ?? []).map((t) => t.name),
     related_games: series.results.map((g) => g.name),
   };
 }

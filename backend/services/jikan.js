@@ -1,7 +1,7 @@
 import apiFetch from './api.js';
 
 export async function searchAnime(query) {
-  let url = `https://api.jikan.moe/v4/anime?q=${query}&limit=10`;
+  let url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=10`;
   const response = await apiFetch(url);
   const animes = response.data;
   const results = animes.map((anime) => ({
@@ -32,7 +32,7 @@ export async function getAnimeDetails(id) {
 }
 
 export async function searchManga(query) {
-  let url = `https://api.jikan.moe/v4/manga?q=${query}&limit=10`;
+  let url = `https://api.jikan.moe/v4/manga?q=${encodeURIComponent(query)}&limit=10`;
   const response = await apiFetch(url);
   const mangas = response.data;
   const results = mangas.map((manga) => ({

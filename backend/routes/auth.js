@@ -7,14 +7,20 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
   try {
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'Fehlende User-Parameter' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
       'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3)',
       [username, email, hashedPassword],
     );
     res.sendStatus(200);
   } catch (error) {
+    if (error.code === '23505') {
+      return res.status(409).json({ error: 'User bereits vorhanden' });
+    }
     console.log(error);
     res.sendStatus(500);
   }

@@ -2,7 +2,7 @@ import apiFetch from './api.js';
 
 export async function searchBook(query) {
   const response = await apiFetch(
-    `https://openlibrary.org/search.json?q=${query}&limit=10`,
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10`,
   );
   const data = response.docs;
   const result = data.map((book) => ({
@@ -16,11 +16,10 @@ export async function searchBook(query) {
 
 export async function getBookDetails(id) {
   const details = await apiFetch(`https://openlibrary.org/works/${id}.json`);
-  const authorKey = details.authors[0].author.key;
-  const author = await apiFetch(
-    `https://openlibrary.org/authors${authorKey}.json`,
-  );
-
+  const authorKey = details.authors?.[0]?.author?.key;
+  const author = authorKey
+    ? await apiFetch(`https://openlibrary.org/${authorKey}.json`)
+    : { name: 'Unbekannt' };
   return {
     title: details.title,
     author_name: author.name,

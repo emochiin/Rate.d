@@ -2,7 +2,7 @@ import apiFetch from './api.js';
 
 export async function searchMovie(query) {
   const response = await apiFetch(
-    `https://api.themoviedb.org/3/search/movie?query=${query}`,
+    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
@@ -20,7 +20,7 @@ export async function searchMovie(query) {
 
 export async function searchSeries(query) {
   const response = await apiFetch(
-    `https://api.themoviedb.org/3/search/tv?query=${query}`,
+    `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(query)}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
