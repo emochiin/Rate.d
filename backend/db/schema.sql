@@ -28,7 +28,8 @@ CREATE TABLE user_media_list(
     status status_enum,
     rating SMALLINT CHECK (rating >=1 AND rating <=10),
     progress INTEGER DEFAULT 0,
-    updated_at TIMESTAMP DEFAULT NOW()
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE (user_id, media_id)
 );
 
 CREATE TABLE user_mood_history (
