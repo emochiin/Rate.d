@@ -88,3 +88,36 @@ export async function getSeriesDetails(id) {
     })),
   };
 }
+
+export async function discoverMoviesByGenre(genreIds) {
+  const genreString = genreIds.join('|');
+
+  const movies = await Promise.all([
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/movie?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=1`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/movie?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=2`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/movie?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=3`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+  ]);
+  const allResults = movies.flatMap((page) => page.results);
+  return allResults.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    image: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    score: movie.vote_average,
+    genre_ids: movie.genre_ids,
+  }));
+}
