@@ -1,0 +1,16 @@
+export const overrepresentedClassics = [
+  'Robinson Crusoe',
+  "Gulliver's Travels",
+  'Adventures of Huckleberry Finn',
+  'Sense and Sensibility',
+  "Alice's Adventures in Wonderland",
+  'A Tale of Two Cities',
+  'Oliver Twist',
+  'Pride and Prejudice',
+  'The Time Machine',
+  'The Wind in the Willows',
+  'The Wonderful Wizard of Oz',
+  "A Midsummer Night's Dream",
+  'A Christmas Carol',
+  'Emma',
+];

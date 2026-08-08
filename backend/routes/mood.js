@@ -23,6 +23,7 @@ import {
   discoverAlbumByTags,
 } from '../services/lastfm.js';
 import { discoverBooksBySubjects } from '../services/openlibrary.js';
+import { overrepresentedClassics } from '../data/overrepresentedClassics.js';
 
 const discoverFunctions = {
   movie: discoverMoviesByGenre,
@@ -106,7 +107,10 @@ router.get('/recommend', authMiddleware, async (req, res) => {
     const scoredResults = results.map((media) => {
       const matchScoreNormalized = matchScoreCalculators[type](media, genreIds);
       const ratingNormalized = ratingNormalizers[type](media.score, maxScore);
-      const finalScore = matchScoreNormalized * 0.4 + ratingNormalized * 0.6;
+      let finalScore = matchScoreNormalized * 0.4 + ratingNormalized * 0.6;
+      if (type === 'book' && overrepresentedClassics.includes(media.title)) {
+        finalScore = finalScore * 0.2;
+      }
       return { ...media, finalScore };
     });
     const sorted = scoredResults.sort((a, b) => b.finalScore - a.finalScore);

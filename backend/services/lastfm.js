@@ -90,7 +90,7 @@ export async function discoverTracksByTags(tags) {
     image: trackData[key].image?.find((i) => i.size === 'extralarge')?.[
       '#text'
     ],
-    score: Number(trackData[key].listeners),
+    score: 100 - Number(trackData[key]['@attr']?.rank || 100),
     matchCount: trackCounts[key],
   }));
 }
@@ -119,7 +119,7 @@ export async function discoverAlbumByTags(tags) {
     image: albumData[key].image?.find((i) => i.size === 'extralarge')?.[
       '#text'
     ],
-    score: Number(albumData[key].listeners),
+    score: 100 - Number(albumData[key]['@attr']?.rank || 100),
     matchCount: albumCounts[key],
   }));
 }
