@@ -121,3 +121,36 @@ export async function discoverMoviesByGenre(genreIds) {
     genre_ids: movie.genre_ids,
   }));
 }
+
+export async function discoverSeriesByGenre(genreIds) {
+  const genreString = genreIds.join('|');
+
+  const series = await Promise.all([
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/tv?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=1`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/tv?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=2`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+    apiFetch(
+      `https://api.themoviedb.org/3/discover/tv?with_genres=${genreString}&sort_by=vote_average.desc&vote_count.gte=5000&page=3`,
+      {
+        headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` },
+      },
+    ),
+  ]);
+  const allResults = series.flatMap((page) => page.results);
+  return allResults.map((show) => ({
+    id: show.id,
+    title: show.name,
+    image: `https://image.tmdb.org/t/p/w500${show.poster_path}`,
+    score: show.vote_average,
+    genre_ids: show.genre_ids,
+  }));
+}

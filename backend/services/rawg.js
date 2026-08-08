@@ -36,3 +36,18 @@ export async function getGameDetails(id) {
     related_games: series.results.map((g) => g.name),
   };
 }
+
+export async function discoverGameByGenre(genreIds) {
+  const genreString = genreIds.join(',');
+
+  const games = await apiFetch(
+    `https://api.rawg.io/api/games?genres=${genreString}&key=${process.env.RAWG_API_KEY}&ordering=-rating&page_size=60&metacritic=50,100`,
+  );
+  return games.results.map((game) => ({
+    id: game.id,
+    title: game.name,
+    image: game.background_image,
+    score: game.rating,
+    genre_ids: game.genres.map((g) => g.slug),
+  }));
+}

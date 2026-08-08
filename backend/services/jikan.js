@@ -61,3 +61,51 @@ export async function getMangaDetails(id) {
   };
   return result;
 }
+
+export async function discoverAnimeByGenre(genreIds) {
+  const genreString = genreIds.join(',');
+
+  const animes = await Promise.all([
+    apiFetch(
+      `https://api.jikan.moe/v4/anime?genres=${genreString}&order_by=score&sort=desc&limit=20&page=1`,
+    ),
+    apiFetch(
+      `https://api.jikan.moe/v4/anime?genres=${genreString}&order_by=score&sort=desc&limit=20&page=2`,
+    ),
+    apiFetch(
+      `https://api.jikan.moe/v4/anime?genres=${genreString}&order_by=score&sort=desc&limit=20&page=3`,
+    ),
+  ]);
+  const allResults = animes.flatMap((page) => page.data);
+  return allResults.map((anime) => ({
+    id: anime.mal_id,
+    title: anime.title,
+    image: anime.images.webp.image_url,
+    score: anime.score,
+    genre_ids: anime.genres.map((g) => g.mal_id),
+  }));
+}
+
+export async function discoverMangaByGenre(genreIds) {
+  const genreString = genreIds.join(',');
+
+  const mangas = await Promise.all([
+    apiFetch(
+      `https://api.jikan.moe/v4/manga?genres=${genreString}&order_by=score&sort=desc&limit=20&page=1`,
+    ),
+    apiFetch(
+      `https://api.jikan.moe/v4/manga?genres=${genreString}&order_by=score&sort=desc&limit=20&page=2`,
+    ),
+    apiFetch(
+      `https://api.jikan.moe/v4/manga?genres=${genreString}&order_by=score&sort=desc&limit=20&page=3`,
+    ),
+  ]);
+  const allResults = mangas.flatMap((page) => page.data);
+  return allResults.map((manga) => ({
+    id: manga.mal_id,
+    title: manga.title,
+    image: manga.images.webp.image_url,
+    score: manga.score,
+    genre_ids: manga.genres.map((g) => g.mal_id),
+  }));
+}
