@@ -146,11 +146,14 @@ export async function discoverSeriesByGenre(genreIds) {
     ),
   ]);
   const allResults = series.flatMap((page) => page.results);
-  return allResults.map((show) => ({
-    id: show.id,
-    title: show.name,
-    image: `https://image.tmdb.org/t/p/w500${show.poster_path}`,
-    score: show.vote_average,
-    genre_ids: show.genre_ids,
+  return Object.keys(trackCounts).map((key) => ({
+    id: key,
+    title: trackData[key].name,
+    artist: trackData[key].artist.name,
+    image: trackData[key].image?.find((i) => i.size === 'extralarge')?.[
+      '#text'
+    ],
+    score: Number(trackData[key].listeners),
+    matchCount: trackCounts[key],
   }));
 }

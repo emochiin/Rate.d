@@ -32,3 +32,30 @@ export async function getBookDetails(id) {
     series: details.series?.[0]?.series?.key,
   };
 }
+
+export async function discoverBooksBySubjects(subjects) {
+  const promises = subjects.map((subject) => {
+    const slug = subject.toLowerCase().replace(/ /g, '_');
+    return apiFetch(`https://openlibrary.org/subjects/${slug}.json?limit=10`);
+  });
+  const pages = await Promise.all(promises);
+  const allResults = pages.flatMap((page) => page.works);
+
+  const bookCounts = {};
+  const bookData = {};
+
+  allResults.forEach((book) => {
+    const key = book.title;
+    bookCounts[key] = (bookCounts[key] || 0) + 1;
+    bookData[key] = book;
+  });
+
+  return Object.keys(bookCounts).map((key) => ({
+    id: key,
+    title: bookData[key].title,
+    artist: bookData[key].authors[0].name,
+    image: `https://covers.openlibrary.org/b/id/${bookData[key].cover_id}-L.jpg`,
+    score: bookData[key].edition_count || 0,
+    matchCount: bookCounts[key],
+  }));
+}

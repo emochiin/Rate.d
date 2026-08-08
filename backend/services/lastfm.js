@@ -64,3 +64,62 @@ export async function getTrackDetails(artist, track) {
     description: data.wiki?.summary,
   };
 }
+
+export async function discoverTracksByTags(tags) {
+  const promises = tags.map((tag) =>
+    apiFetch(
+      `https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=${tag}&api_key=${process.env.LASTFM_API_KEY}&format=json&limit=10`,
+    ),
+  );
+  const pages = await Promise.all(promises);
+  const allResults = pages.flatMap((page) => page.tracks.track);
+
+  const trackCounts = {};
+  const trackData = {};
+
+  allResults.forEach((track) => {
+    const key = `${track.artist.name}-${track.name}`;
+    trackCounts[key] = (trackCounts[key] || 0) + 1;
+    trackData[key] = track;
+  });
+
+  return Object.keys(trackCounts).map((key) => ({
+    id: key,
+    title: trackData[key].name,
+    artist: trackData[key].artist.name,
+    image: trackData[key].image?.find((i) => i.size === 'extralarge')?.[
+      '#text'
+    ],
+    score: Number(trackData[key].listeners),
+    matchCount: trackCounts[key],
+  }));
+}
+
+export async function discoverAlbumByTags(tags) {
+  const promises = tags.map((tag) =>
+    apiFetch(
+      `https://ws.audioscrobbler.com/2.0/?method=tag.gettopalbums&tag=${tag}&api_key=${process.env.LASTFM_API_KEY}&format=json&limit=10`,
+    ),
+  );
+  const pages = await Promise.all(promises);
+  const allResults = pages.flatMap((page) => page.albums.album);
+
+  const albumCounts = {};
+  const albumData = {};
+
+  allResults.forEach((album) => {
+    const key = `${album.artist.name}-${album.name}`;
+    albumCounts[key] = (albumCounts[key] || 0) + 1;
+    albumData[key] = album;
+  });
+
+  return Object.keys(albumCounts).map((key) => ({
+    id: key,
+    title: albumData[key].name,
+    image: albumData[key].image?.find((i) => i.size === 'extralarge')?.[
+      '#text'
+    ],
+    score: Number(albumData[key].listeners),
+    matchCount: albumCounts[key],
+  }));
+}
