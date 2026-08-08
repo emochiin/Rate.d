@@ -16,6 +16,11 @@ app.use('/api/auth', authRouter);
 app.use('/api/media', mediaRouter);
 app.use('/api/mood', moodRouter);
 
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(500).json({ error: 'Etwas ist schiefgelaufen' });
+});
+
 app.listen(PORT, () => {
   console.log(`listening to PORT ${PORT}`);
 });
